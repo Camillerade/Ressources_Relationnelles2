@@ -180,14 +180,20 @@ return $this->render('site/Affichagefavoris.html.twig', [
             $entityManager= $doctrine->getManager();
             if($fichierTelecharge)
             {
+
+
+            // Récupération du nom de fichier avec l'extension
+            $nom_fichier = basename($fichierTelecharge);
+
+
             // Vérifier si le fichier téléchargé est bien un PDF
             if ($fichierTelecharge instanceof UploadedFile && $fichierTelecharge->getClientMimeType() === 'application/pdf') {
-            $fichier = md5(uniqid()) . '.pdf'; // Définir le nom de fichier avec l'extension .pdf
+            $fichier = $nom_fichier; // Définir le nom de fichier avec l'extension .pdf
             $fichierTelecharge->move($this->getParameter('pdfs_directory'), $fichier); // Enregistrer le fichier
             }
              // Vérifier si le fichier téléchargé est bien une image
             if ($fichierTelecharge instanceof UploadedFile && $fichierTelecharge->getClientMimeType() === 'image/jpeg') {
-                $fichier = md5(uniqid()) . '.jpg'; 
+                $fichier =$nom_fichier; 
                 $fichierTelecharge->move($this->getParameter('images_directory'), $fichier); // Enregistrer le fichier
             }
             $ressource->setFichierressource($fichier);

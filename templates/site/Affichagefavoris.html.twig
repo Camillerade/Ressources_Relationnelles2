@@ -3,90 +3,28 @@
 {% block title %}Mes favoris
 {% endblock %}
 {% block body %}
-	{# Header qu'on retrouve en haut de quelques pages du site #}
-	<div id="header">
-		<header class="navbar navbar-expand-lgt " style="background: linear-gradient(#AB3E69, #772b49);">
-			<div
-				class="container-fluid">
-				<!-- Logo à gauche -->
-				<a class="navbar-brand" href="{{ asset('https://www.gouvernement.fr/') }}">
-					<img src="{{ asset('assets/gouv.png') }}" alt="Logo du Gouvernement" height="85" style="border-radius: 50%;">
-				</a>
-
-				<!-- Titre principal centré -->
-				<div class="navbar-brand mx-auto" style="color: white; font-size: 2.5rem;">
-					Ressources Relationnelles
-				</div>
-
-				<!-- Logo à droite -->
-				<a class="navbar-brand" href="{{ asset('Accueil') }}">
-					<img src="{{ asset('assets/logo.png') }}" alt="Logo Ressources Relationnelles" height="85">
-				</a>
-			</div>
-		</header>
-	</div>
-
-	{# Menu de navigation qu on va retrouver juste en dessous du header et sur quelques pas du site #}
-	<nav class="navbar navbar-expand-lg" style="background: linear-gradient(to bottom, #772b49, #AB3E69);">
-		<div class="container-fluid">
-			<a class="navbar-brand text-white">Mes favoris</a>
-			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			{% if app.user %}
-				<div class="collapse navbar-collapse justify-content-end" id="navbarNav" style="color: white;">
-					<ul class="navbar-nav">
-						<li class="nav-item">
-							<a class="nav-link text-white" href="{{ path('Accueil') }}">Accueil</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link text-white" href="{{ path('AjoutRessource') }}">Partager</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link text-white" href="{{ path('Affichageprofil') }}">Mon compte</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link text-white" href="{{ path('app_logout') }}">Me déconnecter</a>
-						</li>
-					</ul>
-				</div>
-			{% else %}
-				<div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-					<ul class="navbar-nav">
-						<li class="nav-item">
-							<a class="nav-link text-white" href="{{ path('app_login') }}">Se connecter</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link text-white" href="{{ path('app_register') }}">M'inscrire</a>
-						</li>
-					</ul>
-				</div>
-			{% endif %}
-		</div>
-	</nav>
-    
-
-	<div class="row">
-		{% for ressource in ressources %}
-			<div class="col-md-2 mb-4">
-				<div class="card">
-					<div class="card-header">
-						<h5 class="card-title">{{ ressource.titreressource }}</h5>
-					</div>
-					<div class="card-body">
-						<p class="card-text">{{ ressource.descriptionressource }}</p>
-						{% if ressource.fichierressource %}
-							{% if ressource.fichierressource | lower | split('.') | last == 'pdf' %}
-								<object data="{{ asset('uploads/pdfs/' ~ ressource.fichierressource) }}" type="application/pdf" width="100%" height="200px"></object>
-								<br>
-								<a href="{{ asset('uploads/pdfs/' ~ ressource.fichierressource) }}" download>Télécharger le fichier PDF</a>
-							{% else %}
-								<img src="{{ asset('assets/uploads/' ~ ressource.fichierressource) }}" alt="Image" class="card-img-top">
-							{% endif %}
-						{% endif %}
-					</div>
-				</div>
-			</div>
-		{% endfor %}
-	</div>
+    <h1>Mes favoris</h1>
+    <form action="{{ path('app_logout') }}" method="POST">
+        <button type="submit">Me deconnecter</button>
+    </form> 
+    <form action="{{ path('Affichageprofil') }}" method="POST">
+        <button type="submit">Retour</button>
+    </form>
+   
+  {% for ressource in ressources %}
+            <ol>
+                Titre : {{ ressource.titreressource }}<br>
+                Description : {{ ressource.descriptionressource }}<br>
+                {% if ressource.fichierressource %}
+                    {% if ressource.fichierressource | lower | split('.') | last == 'pdf' %}
+                        <object data="{{ asset('uploads/pdfs/' ~ ressource.fichierressource) }}" type="application/pdf" width="35%" height="10%"></object><br>
+                        <a href="{{ asset('uploads/pdfs/' ~ ressource.fichierressource) }}" download>Télécharger le fichier PDF</a><br>
+                    {% else %}
+                        <img src="{{ asset('assets/uploads/' ~ ressource.fichierressource) }}" alt="Image" width="150">
+                    {% endif %}
+            
+                {% endif %}
+            </ol>
+        {% endfor %}
 {% endblock %}
+

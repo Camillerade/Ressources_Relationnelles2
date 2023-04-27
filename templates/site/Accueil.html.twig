@@ -1,76 +1,200 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Accueil{% endblock %}
+{% block title %}Accueil
+{% endblock %}
 {% block body %}
-    <h1>Fil actualité</h1>
+	{# Header qu'on retrouve en haut de quelques pages du site #}
+	<div id="header">
+		<header class="navbar navbar-expand-lgt " style="background: linear-gradient(#AB3E69, #772b49);">
+			<div
+				class="container-fluid">
+				 {# Logo à gauche  #}
+				<a class="navbar-brand" href="{{ asset('https://www.gouvernement.fr/') }}">
+					<img src="{{ asset('assets/gouv.png') }}" alt="Logo du Gouvernement" height="85" style="border-radius: 50%;">
+				</a>
 
-  {% if app.user %}
-    <form action="{{ path('app_logout') }}" method="POST">
-        <button type="submit">Me déconnecter</button>
-    </form>
-    <form action="{{ path('Affichageprofil') }}" method="POST">
-        <button type="submit">Mon compte</button>
-    </form>
-     <form action="{{ path('AjoutRessource') }}" method="POST">
-        <button type="submit">Partager</button>
-    </form>
-{% else %}
-    <form action="{{ path('app_login') }}" method="POST">
-        <button type="submit">Me connecter</button>
-    </form>
-    <form action="{{ path('app_register') }}" method="POST">
-        <button type="submit">M'inscrire</button>
-    </form>
-    
-{% endif %}
-    <ul>
-        {% for ressource in ressources %}
-            <li>
-                Titre : {{ ressource.titreressource }}<br>
-                Description : {{ ressource.descriptionressource }}<br>
-                Partagé par : {{ users[loop.index0].getNomuser() }} {{ users[loop.index0].getPrenomUser() }}<br>
-                {% if ressource.fichierressource %}
-                    {% if ressource.fichierressource | lower | split('.') | last == 'pdf' %}
-                        <object data="{{ asset('uploads/pdfs/' ~ ressource.fichierressource) }}" type="application/pdf" width="35%" height="10%"></object><br>
-                        <a href="{{ asset('uploads/pdfs/' ~ ressource.fichierressource) }}" download>Télécharger le fichier PDF</a>
-                    {% else %}
-                        <img src="{{ asset('assets/uploads/' ~ ressource.fichierressource) }}" alt="Image" width="150">
-                    {% endif %}
-                   {% endif %}
-                   <br>  
-                       <br>  
-                        Commentaire :
-                          <br>  
-                    {% for commentaire in commentaires %}
-                    {% if commentaire %}
-                    {% for com in commentaire %}
-                        {% if com.idrescommentaire == ressource.getIdRessource() %}
-                      
-                        <li>{{ userscom[loop.index0].getNomuser() }} {{ userscom[loop.index0].getPrenomUser() }} : {{ com.getcontenucommentaire() }}</li>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-            {% endfor %}
-                 {% if app.user %}
-                <form action="{{ path('Favoris') }}" method="POST">
-                        <input type="hidden" name="ressourceId" value="{{ ressource.getIdRessource() }}">
-                        {% if ajoute[loop.index0] %}
-                           <button type="submit">Retirer en favoris</button>
-                          {% else %}
-                          <button type="submit">Mettre en favoris</button>
-                        
-                           {% endif %}
-                </form>
-                 <form action="{{ path('Commentaire') }}" method="POST">
-                    <label for="description">Commentaire :</label>
-                    <input type="hidden" name="ressourceId" value="{{ ressource.getIdRessource() }}">
-                    <textarea name="commentaire" id="commentaire" rows="5"></textarea>
-                    <button type="submit">Ajouter</button>
-                </form>
-             
-                {% endif %}
-            </li>
-        {% endfor %}
-    </ul>
-      
+				<!-- Titre principal centré -->
+				<div class="navbar-brand mx-auto" style="color: white; font-size: 2.5rem;">
+					Ressources Relationnelles
+				</div>
+
+				<!-- Logo à droite -->
+				<a class="navbar-brand" href="{{ asset('Accueil') }}">
+					<img src="{{ asset('assets/logo.png') }}" alt="Logo Ressources Relationnelles" height="85">
+				</a>
+			</div>
+		</header>
+	</div>
+
+	{# Menu de navigation qu on va retrouver juste en dessous du header et sur quelques pas du site #}
+	<nav class="navbar navbar-expand-lg" style="background: linear-gradient(to bottom, #772b49, #AB3E69);">
+		<div class="container-fluid">
+			<a class="navbar-brand text-white">Fil actualité</a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			{% if app.user %}
+				<div class="collapse navbar-collapse justify-content-end" id="navbarNav" style="color: white;">
+					<ul class="navbar-nav">
+						<li class="nav-item">
+							<a class="nav-link text-white" href="{{ path('Affichageprofil') }}">Mon compte</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-white" href="{{ path('AjoutRessource') }}">Partager</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-white" href="{{ path('app_logout') }}">Me déconnecter</a>
+						</li>
+					</ul>
+				</div>
+			{% else %}
+				<div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+					<ul class="navbar-nav">
+						<li class="nav-item">
+							<a class="nav-link text-white" href="{{ path('app_login') }}">Se connecter</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-white" href="{{ path('app_register') }}">S'inscrire</a>
+						</li>
+					</ul>
+				</div>
+			{% endif %}
+		</div>
+	</nav>
+
+	{# Ici la définition des cartes qui seront affichées dans le fil d'actualité #}
+	<div style="background-color: #ededed;">
+		<div class="container">
+			<div class="row">
+
+				<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
+				<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+				<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js" integrity="sha384-zYPOMqeu1DAVkHiLqWBUTcbYfZ8osu1Nd6Z89ify25QV9guujx43ITvfi12/QExE" crossorigin="anonymous"></script>
+				<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js" integrity="sha384-Y4oOpwW3duJdCWv5ly8SCFYWqFDsfob/3GkgExXKV4idmbt98QcxXYs9UoXAB7BZ" crossorigin="anonymous"></script>
+
+
+				<div class="container" style="width:400px;">
+					<ul>
+						{% for ressource in ressources %}
+							{# Informations de la ressource : Auteur + Contenu + Actions #}
+							<li style="list-style-type: none; ">
+								<div class="card" style="width: 100%; margin-top: 50px;">
+									<div class="card-header">
+										<h5 class="card-title text-center">{{ users[loop.index0].getPrenomUser() }}
+											{{ users[loop.index0].getNomuser() }}</h5>
+									</div>
+
+									<div
+										class="md-4 text-center">
+										{# Verification du type de fichier #}
+										{% if ressource.fichierressource %}
+											{% if ressource.fichierressource | lower | split('.') | last == 'pdf' %}
+												<object data="{{ asset('uploads/pdfs/' ~ ressource.fichierressource) }}" type="application/pdf" width="100%"></object><br>
+												<a href="{{ asset('uploads/pdfs/' ~ ressource.fichierressource) }}" download>Télécharger le fichier PDF</a>
+											{% else %}
+												<div style="padding: 15px ;">
+													<img src="{{ asset('assets/uploads/' ~ ressource.fichierressource) }}" alt="Image" width="100%">
+												</div>
+											{% endif %}
+										{% endif %}
+									</div>
+									<div
+										class="card-body">
+										{# Titre + Description de la ressource #}
+										<h4 class="card-title">{{ ressource.titreressource }}</h4>
+										<p class="card-text">{{ ressource.descriptionressource }}</p>
+
+									</div>
+									<div
+										class="card-footer">
+
+										{# Ajout de la ressource en favoris #}
+										{% if app.user %}
+											<div class="d-flex justify-content-between">
+												<div>
+													<form action="{{ path('Favoris') }}" method="POST">
+														<input type="hidden" name="ressourceId" value="{{ ressource.getIdRessource() }}">
+														{% if ajoute[loop.index0] %}
+															<button class="btn btn-primary" type="submit">
+																<i class="bi bi-star-fill text-warning"></i>
+															</button>
+														{% else %}
+															<button class="btn btn-primary" type="submit">
+																<i class="bi bi-star"></i>
+															</button>
+														{% endif %}
+													</form>
+												</div>
+
+
+												<div>
+													{# Bouton pour declancher le modal #}
+													<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#{{ ressource.getIdRessource() }}">
+														<i class="bi bi-chat-left-dots"></i>
+													</button>
+
+													{# Contenu du modal #}
+													<div class="modal fade" id="{{ ressource.getIdRessource() }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+														<div class="modal-dialog">
+															<div class="modal-content">
+																<div class="modal-header">
+																	<h1 class="modal-title fs-5" id="exampleModalLabel">Commentaires :
+																		{{ ressource.titreressource }}</h1>
+																	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+																</div>
+																<div class="modal-body">
+																	<div class="row">
+																		<div class="col">
+																			<ul class="list-group">
+																				{% for commentaire in commentaires %}
+																					{% if commentaire %}
+																						{% for com in commentaire %}
+																							{% if com.idrescommentaire == ressource.getIdRessource() %}
+																								<li class="list-group-item">
+																									<div class="d-flex justify-content-between align-items-center">
+																										<h5>{{ userscom[loop.index0].getNomuser() }}
+																											{{ userscom[loop.index0].getPrenomUser() }}</h5>
+																										{# <span class="badge bg-primary rounded-pill">{{ com.getDatecommentaire()|date('d/m/Y H:i') }}</span> #}
+																									</div>
+																									<p class="my-3">{{ com.getcontenucommentaire() }}</p>
+																								</li>
+																							{% endif %}
+																						{% endfor %}
+																					{% endif %}
+																				{% endfor %}
+																			</ul>
+																		</div>
+																	</div>
+																	<div class="row">
+																		<form action="{{ path('Commentaire') }}" method="POST">
+																			<div>
+																				<textarea name="commentaire" id="commentaire" style="width: 100%" placeholder="Un commentaire à partager ?"></textarea>
+																			</div>
+																			<div>
+																				<input type="hidden" name="ressourceId" value="{{ ressource.getIdRessource() }}">
+																				<button class="btn btn-primary" type="submit">
+																					<i class="bi bi-check-lg"></i>
+																				</button>
+																			</form>
+																		</div>
+																	</div>
+																</div>
+																<div class="modal-footer">
+																	<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fermer</button>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										{% endif %}
+									</div>
+								</div>
+							</li>
+						{% endfor %}
+					</li>
+				</ul>
+			</li>
+		</div>
+	</div>
 {% endblock %}

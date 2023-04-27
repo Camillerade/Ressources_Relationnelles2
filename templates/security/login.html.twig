@@ -1,44 +1,77 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Connexion{% endblock %}
+{% block title %}Connexion
+{% endblock %}
 
 {% block body %}
-<form method="post">
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
 
-    {% if app.user %}
-        <div class="mb-3">
-            Vous êtes connecté {{ app.user.userIdentifier }}<form action="{{ path('app_logout') }}" method="POST">
-    <button type="submit">Me deconnecter</button>
-    </form>
-        </div>
-    {% endif %}
+	{# Header qu'on retrouve en haut de quelques pages du site #}
+	<div id="header">
+		<header class="navbar navbar-expand-lgt " style="background: linear-gradient(#AB3E69, #772b49);">
+			<div
+				class="container-fluid">
+				<!-- Logo à gauche -->
+				<a class="navbar-brand" href="{{ asset('https://www.gouvernement.fr/') }}">
+					<img src="{{ asset('assets/gouv.png') }}" alt="Logo du Gouvernement" height="85">
+				</a>
 
-    <h1 class="h3 mb-3 font-weight-normal">Me connecter</h1>
-    <label for="inputMailuser">Email :</label>
-    <input type="text" value="{{ last_username }}" name="mailuser" id="inputMailuser" class="form-control" autocomplete="username" required autofocus>
-    <label for="inputPassword">Mot de passse :</label>
-    <input type="password" name="motdepasseuser" id="inputmotdepasseuser" class="form-control" autocomplete="current-password" required>
+				<!-- Titre principal centré -->
+				<div class="navbar-brand mx-auto" style="color: white; font-size: 2.5rem;">
+					Ressources Relationnelles
+				</div>
 
-    <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}"
-    >
+				<!-- Logo à droite -->
+				<a class="navbar-brand" href="{{ asset('Accueil') }}">
+					<img src="{{ asset('assets/logo.png') }}" alt="Logo Ressources Relationnelles" height="85">
+				</a>
+			</div>
+		</header>
+	</div>
 
-    {#
-        Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-        See https://symfony.com/doc/current/security/remember_me.html
+	{# Menu de navigation qu on va retrouver juste en dessous du header et sur quelques pas du site #}
+	<nav class="navbar navbar-expand-lg" style="background: linear-gradient(to bottom, #772b49, #AB3E69);">
+		<div class="container-fluid">
+			<a class="navbar-brand text-white">Me connecter</a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+		</div>
+	</nav>
 
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" name="_remember_me"> Remember me
-            </label>
-        </div>
-    #}
+	<form method="post" class="rounded p-4 mx-5 text-center ">
+		{% if error %}
+			<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+		{% endif %}
 
-    <button class="btn btn-lg btn-primary" type="submit">
-        Me connecter
-    </button>
-</form>
+		{% if app.user %}
+			<div class="mb-3">
+				Vous êtes connecté
+				{{ app.user.userIdentifier }}
+				<form action="{{ path('app_logout') }}" method="POST">
+					<button type="submit">Me deconnecter</button>
+				</form>
+			</div>
+		{% endif %}
+
+		<label for="inputMailuser" class="form-label">Email :</label>
+		<input type="text" value="{{ last_username }}" name="mailuser" id="inputMailuser" class="form-control" autocomplete="username" required autofocus>
+
+		<br>
+
+		<label for="inputPassword" class="form-label">Mot de passe :</label>
+		<input type="password" name="motdepasseuser" id="inputmotdepasseuser" class="form-control" autocomplete="current-password" required>
+
+		<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+		<br>
+
+		<button class="btn btn-lg btn-primary" type="submit">Me connecter</button>
+
+		<br>
+
+	</form>
+	<form class="text-center my-2" action="{{ path('Accueil') }}" method="POST">
+		<button type="submit" class="btn btn-lg btn-danger">Retour</button>
+	</form>
+
 {% endblock %}

@@ -1,34 +1,83 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}Register
+{% endblock %}
 
 {% block body %}
-    {% for flash_error in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-    {% endfor %}
+	{# Header qu'on retrouve en haut de quelques pages du site #}
+	<div id="header">
+		<header class="navbar navbar-expand-lgt " style="background: linear-gradient(#AB3E69, #772b49);">
+			<div
+				class="container-fluid">
+				<!-- Logo à gauche -->
+				<a class="navbar-brand" href="{{ asset('https://www.gouvernement.fr/') }}">
+					<img src="{{ asset('assets/gouv.png') }}" alt="Logo du Gouvernement" height="85" style="border-radius: 50%;">
+				</a>
 
-    <h1>Inscription</h1>
+				<!-- Titre principal centré -->
+				<div class="navbar-brand mx-auto" style="color: white; font-size: 2.5rem;">
+					Ressources Relationnelles
+				</div>
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.nomuser, {
-            label: 'Nom :'
-        }) }}
-          {{ form_row(registrationForm.prenomuser, {
-            label: 'Prénom :'
-        }) }}
-           {{ form_row(registrationForm.datenaissuser, {
-            label: 'Date de naissance :'
-        }) }}
-            {{ form_row(registrationForm.validationrgpd, {
-            label: 'Validation de la RGPD :'
-        }) }}
-        {{ form_row(registrationForm.mailuser, {
-            label: 'Adresse Email :'
-        }) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Mot de passe :'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
-        <button type="submit" class="btn">Valider</button>
-    {{ form_end(registrationForm) }}
+				<!-- Logo à droite -->
+				<a class="navbar-brand" href="{{ asset('Accueil') }}">
+					<img src="{{ asset('assets/logo.png') }}" alt="Logo Ressources Relationnelles" height="85">
+				</a>
+			</div>
+		</header>
+	</div>
+
+	{# Menu de navigation qu on va retrouver juste en dessous du header et sur quelques pas du site #}
+	<nav class="navbar navbar-expand-lg" style="background: linear-gradient(to bottom, #772b49, #AB3E69);">
+		<div class="container-fluid">
+			<a class="navbar-brand text-white">Inscription</a>
+		</div>
+	</nav>
+
+	<div class="rounded p-4 mx-5 my-2" style="background-color: #f2f2f2;">
+		{% for flash_error in app.flashes('verify_email_error') %}
+			<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+		{% endfor %}
+
+
+		{{ form_start(registrationForm) }}
+		<div class="col-md-12">
+			{{ form_row(registrationForm.nomuser, { label: 'Nom :', 'attr': {'class': 'form-control mb-2'} }) }}
+		</div>
+		<div class="col-md-12">
+			{{ form_row(registrationForm.prenomuser, { label: 'Prénom :', 'attr': {'class': 'form-control mb-2'} }) }}
+		</div>
+		<div class="col-md-12">
+			{{ form_row(registrationForm.datenaissuser, { label: 'Date de naissance :' }) }}
+		</div>
+		<div class="col-md-12">
+			{{ form_row(registrationForm.validationrgpd, { label: 'Validation de la RGPD :  ' }) }}
+			<div>
+				<a href="{{ asset('https://fr.wikipedia.org/wiki/R%C3%A8glement_g%C3%A9n%C3%A9ral_sur_la_protection_des_donn%C3%A9es') }}" target="_blank">Plus d'informations</a>
+			</div>
+		</div>
+
+		<div class="col-md-12">
+			{{ form_row(registrationForm.mailuser, { label: 'Adresse Email :', 'attr': {'class': 'form-control mb-2'} }) }}
+		</div>
+		<div class="col-md-12">
+			{{ form_row(registrationForm.plainPassword, { label: 'Mot de passe :', 'attr': {'class': 'form-control mb-2'} }) }}
+		</div>
+		<div class="col-md-12">
+			{{ form_row(registrationForm.agreeTerms, {label: "J'accepte les termes et conditions :  " }) }}
+			<div>
+				<a href="{{ asset('https://fr.wikipedia.org/wiki/Conditions_g%C3%A9n%C3%A9rales_d%27utilisation') }}" target="_blank">Plus d'informations</a>
+			</div>
+		</div>
+		<div class="col-md-12  my-2">
+			<form action="{{ path('Accueil') }}" method="POST">
+				<button type="submit" class="btn btn-primary  my-2">Valider</button>
+			</form>
+			{{ form_end(registrationForm) }}
+			<form action="{{ asset('Accueil') }}" method="POST">
+				<button class="btn btn-danger" type="submit">Retour</button>
+			</form>
+		</div>
+
+	</div>
 {% endblock %}

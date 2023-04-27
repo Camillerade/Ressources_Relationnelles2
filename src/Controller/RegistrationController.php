@@ -32,32 +32,32 @@ class RegistrationController extends AbstractController
         $date = new \DateTime();
        
 
-        $user = new Utilisateur();
+        $utilisateur = new Utilisateur();
 
-        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form = $this->createForm(RegistrationFormType::class,  $utilisateur);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $user->setDateDerniereCoUser($date);
-            $user->setRoles();
+            $utilisateur->setDateDerniereCoUser($date);
+            $utilisateur->setRoles();
 
             // Cryptage du mot de passe
-            $user->setPassword(
+            $utilisateur->setPassword(
                 $userPasswordHasher->hashPassword(
-                    $user,
+                    $utilisateur,
                     $form->get('plainPassword')->getData()
                 )
             );
 
-            $entityManager->persist($user);
+            $entityManager->persist( $utilisateur);
             $entityManager->flush();
 
             // generate a signed url and email it to the user
-            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
+            $this->emailVerifier->sendEmailConfirmation('app_verify_email',  $utilisateur,
                 (new TemplatedEmail())
                     ->from(new Address('radecamille@outlook.fr', 'bot'))
-                    ->to($user->getMailUser())
+                    ->to( $utilisateur->getMailUser())
                     ->subject('Please Confirm your Email')
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );

@@ -11,7 +11,7 @@
     </form>
    
   {% for ressource in ressources %}
-            <li>
+            <ol>
                 Titre : {{ ressource.titreressource }}<br>
                 Description : {{ ressource.descriptionressource }}<br>
                 {% if ressource.fichierressource %}
@@ -23,6 +23,6 @@
                     {% endif %}
             
                 {% endif %}
-            </li>
+            </ol>
         {% endfor %}
 {% endblock %}

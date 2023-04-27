@@ -26,14 +26,9 @@ class RegistrationController extends AbstractController
     }
 
     #[Route('/register', name: 'app_register')]
-    public function register(?Utilisateur $user,Request $request, 
-    UserPasswordHasherInterface $userPasswordHasher, 
-    EntityManagerInterface $entityManager): Response
+    public function register(Request $request,UserPasswordHasherInterface $userPasswordHasher,EntityManagerInterface $entityManager):Response
     {
-        //recupereation de la date du jour 
         $date = new \DateTime();
-       
-
         $utilisateur = new Utilisateur();
 
         $form = $this->createForm(RegistrationFormType::class,  $utilisateur);

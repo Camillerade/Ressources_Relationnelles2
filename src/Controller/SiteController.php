@@ -159,7 +159,7 @@ return $this->render('site/Affichagefavoris.html.twig', [
     }
 
     #[Route('/AjoutRessource', name: 'AjoutRessource')]
-    public function formulaireRessource(?Ressource $ressource,ManagerRegistry $doctrine, Request $request,EntityManagerInterface $ClassManager): Response
+    public function formulaireRessource(?Ressource $ressource,ManagerRegistry $doctrine, Request $request,EntityManagerInterface $Manager): Response
     { 
         // Récupérer l'utilisateur connecté
         $user = $this->getUser();
@@ -177,7 +177,7 @@ return $this->render('site/Affichagefavoris.html.twig', [
 
             $fichierTelecharge = $form->get('fichierressource')->getData();
             
-            $ClassManager= $doctrine->getManager();
+            $Manager= $doctrine->getManager();
             if($fichierTelecharge)
             {
 
@@ -200,8 +200,8 @@ return $this->render('site/Affichagefavoris.html.twig', [
             
             }
 
-            $ClassManager->persist($ressource);
-            $ClassManager->flush();
+            $Manager->persist($ressource);
+            $Manager->flush();
         }
 
         return $this->render('site/AjoutRessource.html.twig', [

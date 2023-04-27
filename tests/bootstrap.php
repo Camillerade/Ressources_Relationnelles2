@@ -2,7 +2,8 @@
 
 use PhpParser\Node\Expr\Include_;
 use Symfony\Component\Dotenv\Dotenv;
-Include_once dirname(__DIR__).'/vendor/autoload.php';
+
+include_once dirname(__DIR__).'/vendor/autoload.php';
 
 if (file_exists(dirname(__DIR__).'/config/bootstrap.php')) {
     include_once dirname(__DIR__).'/config/bootstrap.php';

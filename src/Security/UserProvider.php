@@ -63,7 +63,7 @@ class UserProvider implements UserProviderInterface
 
         // Return a User object after making sure its data is "fresh".
         // Or throw a UsernameNotFoundException if the user no longer exists.
-        throw new \Exception('TODO: fill in refreshUser() inside '.__FILE__);
+        throw new \Exception('TODO: fill in refreshUser()');
     }
 
     /**

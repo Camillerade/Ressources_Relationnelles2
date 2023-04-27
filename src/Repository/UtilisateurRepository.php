@@ -40,11 +40,9 @@ class UtilisateurRepository extends ServiceEntityRepository
         ';
         $stmt = $conn->executeQuery($sql, ['id' => $userId]);
 
-        // fetchColumn() returns the first column of the next row
         $roles = $stmt->fetchColumn();
 
         return [$roles];
     }
 
-    // Ajoutez d'autres méthodes personnalisées ici si nécessaire
 }

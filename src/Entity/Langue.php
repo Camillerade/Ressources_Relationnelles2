@@ -12,14 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Langue
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="IDLangue", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $idlangue;
+    
 
     /**
      * @var string

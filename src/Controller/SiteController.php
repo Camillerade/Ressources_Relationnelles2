@@ -16,9 +16,6 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-// use Symfony\Component\HttpFoundation\File\Exception\FileException;
-// use Symfony\Component\HttpFoundation\File\UploadedFile;
-
 
 class SiteController extends AbstractController
 {
@@ -187,12 +184,14 @@ return $this->render('site/Affichagefavoris.html.twig', [
 
 
             // Vérifier si le fichier téléchargé est bien un PDF
-            if ($fichierTelecharge instanceof UploadedFile && $fichierTelecharge->getClientMimeType() === 'application/pdf') {
+            if ($fichierTelecharge instanceof UploadedFile && $fichierTelecharge
+            ->getClientMimeType() === 'application/pdf') {
             $fichier = $nom_fichier; // Définir le nom de fichier avec l'extension .pdf
             $fichierTelecharge->move($this->getParameter('pdfs_directory'), $fichier); // Enregistrer le fichier
             }
              // Vérifier si le fichier téléchargé est bien une image
-            if ($fichierTelecharge instanceof UploadedFile && $fichierTelecharge->getClientMimeType() === 'image/jpeg') {
+            if ($fichierTelecharge instanceof UploadedFile && $fichierTelecharge
+            ->getClientMimeType() === 'image/jpeg') {
                 $fichier =$nom_fichier; 
                 $fichierTelecharge->move($this->getParameter('images_directory'), $fichier); // Enregistrer le fichier
             }

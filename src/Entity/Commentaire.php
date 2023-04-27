@@ -7,19 +7,12 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Commentaire
  *
- * @ORM\Table(name="commentaire", indexes={@ORM\Index(name="IDUserCommentaire", columns={"IDUserCommentaire", "IDResCommentaire"})})
+ * @ORM\Table(name="commentaire", indexes={@ORM\Index(name="IDUserCommentaire", 
+ * columns={"IDUserCommentaire", "IDResCommentaire"})})
  * @ORM\Entity
  */
 class Commentaire
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="IDCommentaire", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $idcommentaire;
 
     /**
      * @var string

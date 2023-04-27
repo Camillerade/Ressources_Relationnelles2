@@ -12,14 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Categorieressource
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="IDCategorieRessource", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $idcategorieressource;
+   
 
     /**
      * @var string

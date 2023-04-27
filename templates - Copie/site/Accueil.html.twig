@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+{% block body %}
+    <h1>Fil actualité</h1>
+
+  {% if app.user %}
+    <form action="{{ path('app_logout') }}" method="POST">
+        <button type="submit">Me déconnecter</button>
+    </form>
+    <form action="{{ path('Affichageprofil') }}" method="POST">
+        <button type="submit">Mon compte</button>
+    </form>
+     <form action="{{ path('AjoutRessource') }}" method="POST">
+        <button type="submit">Partager</button>
+    </form>
+{% else %}
+    <form action="{{ path('app_login') }}" method="POST">
+        <button type="submit">Me connecter</button>
+    </form>
+    <form action="{{ path('app_register') }}" method="POST">
+        <button type="submit">M'inscrire</button>
+    </form>
+    
+{% endif %}
+    <ul>
+        {% for ressource in ressources %}
+            <li>
+                Titre : {{ ressource.titreressource }}<br>
+                Description : {{ ressource.descriptionressource }}<br>
+                Partagé par : {{ users[loop.index0].getNomuser() }} {{ users[loop.index0].getPrenomUser() }}<br>
+                {% if ressource.fichierressource %}
+                    {% if ressource.fichierressource | lower | split('.') | last == 'pdf' %}
+                        <object data="{{ asset('uploads/pdfs/' ~ ressource.fichierressource) }}" type="application/pdf" width="35%" height="10%"></object><br>
+                        <a href="{{ asset('uploads/pdfs/' ~ ressource.fichierressource) }}" download>Télécharger le fichier PDF</a>
+                    {% else %}
+                        <img src="{{ asset('assets/uploads/' ~ ressource.fichierressource) }}" alt="Image" width="150">
+                    {% endif %}
+                   {% endif %}
+                   <br>  
+                       <br>  
+                        Commentaire :
+                          <br>  
+                    {% for commentaire in commentaires %}
+                    {% if commentaire %}
+                    {% for com in commentaire %}
+                        {% if com.idrescommentaire == ressource.getIdRessource() %}
+                      
+                        <li>{{ userscom[loop.index0].getNomuser() }} {{ userscom[loop.index0].getPrenomUser() }} : {{ com.getcontenucommentaire() }}</li>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+                 {% if app.user %}
+                <form action="{{ path('Favoris') }}" method="POST">
+                        <input type="hidden" name="ressourceId" value="{{ ressource.getIdRessource() }}">
+                        {% if ajoute[loop.index0] %}
+                           <button type="submit">Retirer en favoris</button>
+                          {% else %}
+                          <button type="submit">Mettre en favoris</button>
+                        
+                           {% endif %}
+                </form>
+                 <form action="{{ path('Commentaire') }}" method="POST">
+                    <label for="description">Commentaire :</label>
+                    <input type="hidden" name="ressourceId" value="{{ ressource.getIdRessource() }}">
+                    <textarea name="commentaire" id="commentaire" rows="5"></textarea>
+                    <button type="submit">Ajouter</button>
+                </form>
+             
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+      
+{% endblock %}

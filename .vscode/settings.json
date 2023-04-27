@@ -1,0 +1,4 @@
+{
+    "intelephense.diagnostics.undefinedMethods": false,
+    "git.ignoreLimitWarning": true
+}

@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajout ressource{% endblock %}
+{% block body %}
+    {{ form(formRessource) }}
+    <form action="{{ path('Accueil') }}" method="POST">
+        <button type="submit">Retour</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,25 @@
+security:
+    password_hashers:
+        App\Entity\Utilisateur:
+            algorithm: bcrypt
+
+
+    providers:
+        app_user_provider:
+            entity:
+                class: App\Entity\Utilisateur
+                property: mailuser         
+ 
+    firewalls:
+        main:
+            lazy: true
+            provider: app_user_provider
+            custom_authenticator: App\Security\UtilisateurAuthenticator
+            logout:
+                path: app_logout
+                target: home
+            
+            
+parameters:
+    images_directory: '%kernel.project_dir%/public/assets/uploads'
+    pdfs_directory: '%kernel.project_dir%/public/uploads/pdfs'

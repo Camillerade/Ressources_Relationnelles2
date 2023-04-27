@@ -1,0 +1,14 @@
+controllers:
+    resource: ../src/Controller/
+    type: attribute
+home:
+    path: /accueil
+    controller: App\Controller\SiteController::Accueil
+    defaults:
+        images_directory: '%images_directory%'
+login:
+    path: /login
+    controller: App\Controller\SecurityController::login
+logout:
+    path: /logout
+    controller: App\Controller\SecurityController::logout

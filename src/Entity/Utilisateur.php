@@ -11,10 +11,12 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * Utilisateur
  *
- * @ORM\Table(name="utilisateur", indexes={@ORM\Index(name="TypeUser", columns={"TypeUser"}), @ORM\Index(name="IDGENRE", columns={"GenreUser"}), @ORM\Index(name="Langue", columns={"LangueUser"})})
+ * @ORM\Table(name="utilisateur", indexes={@ORM\Index(name="TypeUser", 
+ * columns={"TypeUser"}), @ORM\Index(name="IDGENRE", columns={"GenreUser"}), 
+ * @ORM\Index(name="Langue", columns={"LangueUser"})})
  * @ORM\Entity
  */
-#[UniqueEntity(fields: ['mailuser'], message: 'There is already an account with this mailuser')]
+
 #[UniqueEntity(fields: ['mailuser'], message: 'There is already an account with this mailuser')]
 class Utilisateur  implements UserInterface,PasswordAuthenticatedUserInterface
 {
@@ -151,10 +153,6 @@ class Utilisateur  implements UserInterface,PasswordAuthenticatedUserInterface
     {
         return $this->mailuser;
     }
-    public function getPasswordHasherName() 
-    {
-        return $this->motdepasseuser;
-    }
 
 
     /**
@@ -225,11 +223,7 @@ class Utilisateur  implements UserInterface,PasswordAuthenticatedUserInterface
 
         return $this;
     }
-    public function getMailUser(): ?string
-    {
-        return $this->mailuser;
-    }
-
+ 
     public function setMailUser(string $mailuser): self
     {
         $this->mailuser = $mailuser;
@@ -249,7 +243,7 @@ class Utilisateur  implements UserInterface,PasswordAuthenticatedUserInterface
     }
     public function getTypeuser()
     {
-        return $this->genreuser;
+        return $this->typeuser;
     }
     public function setTypeuser(string $typeuser)
     {

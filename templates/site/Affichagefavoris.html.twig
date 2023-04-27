@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Mes favoris{% endblock %}
+{% block title %}Mes favoris
+{% endblock %}
 {% block body %}
     <h1>Mes favoris</h1>
     <form action="{{ path('app_logout') }}" method="POST">
@@ -26,3 +27,4 @@
             </ol>
         {% endfor %}
 {% endblock %}
+

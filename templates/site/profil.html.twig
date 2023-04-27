@@ -1,41 +1,48 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Mon compte{% endblock %}
+{% block title %}Mon compte
+{% endblock %}
 {% block body %}
-    <h1>Mon compte</h1>
-    <form action="{{ path('app_logout') }}" method="POST">
-        <button type="submit">Me deconnecter</button>
-    </form> 
-    <form action="{{ path('Accueil') }}" method="POST">
-        <button type="submit">Retour</button>
-    </form>
-    <form action="{{ path('AjoutRessource') }}" method="POST">
-        <button type="submit">Partager</button>
-    </form>
-    <form action="{{ path('AfficherFavoris') }}" method="POST">
-        <button type="submit">Mes Favoris</button>
-    </form>
-   
-    Nom : {{ user.nomuser }}<br>
-    Prénom : {{ user.prenomuser }}<br>
-    Date de naissance : {{ user.datenaissuser|date('d/m/Y') }}<br>
-    Adresse mail : {{ user.mailuser }}<br><br><br>
-    Mes publications :
-    <br>
-    <br>
-  {% for ressource in ressources %}
-            <ol>
-                Titre : {{ ressource.titreressource }}<br>
-                Description : {{ ressource.descriptionressource }}<br>
-                {% if ressource.fichierressource %}
-                    {% if ressource.fichierressource | lower | split('.') | last == 'pdf' %}
-                        <object data="{{ asset('uploads/pdfs/' ~ ressource.fichierressource) }}" type="application/pdf" width="35%" height="10%"></object><br>
-                        <a href="{{ asset('uploads/pdfs/' ~ ressource.fichierressource) }}" download>Télécharger le fichier PDF</a><br>
-                    {% else %}
-                        <img src="{{ asset('assets/uploads/' ~ ressource.fichierressource) }}" alt="Image" width="150">
-                    {% endif %}
-            
-                {% endif %}
-            </ol>
-        {% endfor %}
+	<h1>Mon compte</h1>
+	<form action="{{ path('app_logout') }}" method="POST">
+		<button type="submit">Me deconnecter</button>
+	</form>
+	<form action="{{ path('Accueil') }}" method="POST">
+		<button type="submit">Retour</button>
+	</form>
+	<form action="{{ path('AjoutRessource') }}" method="POST">
+		<button type="submit">Partager</button>
+	</form>
+	<form action="{{ path('AfficherFavoris') }}" method="POST">
+		<button type="submit">Mes Favoris</button>
+	</form>
+
+	Nom :
+	{{ user.nomuser }}<br>
+	Prénom :
+	{{ user.prenomuser }}<br>
+	Date de naissance :
+	{{ user.datenaissuser|date('d/m/Y') }}<br>
+	Adresse mail :
+	{{ user.mailuser }}<br><br><br>
+	Mes publications :
+	<br>
+	<br>
+	{% for ressource in ressources %}
+		<ol>
+			Titre :
+			{{ ressource.titreressource }}<br>
+			Description :
+			{{ ressource.descriptionressource }}<br>
+			{% if ressource.fichierressource %}
+				{% if ressource.fichierressource | lower | split('.') | last == 'pdf' %}
+					<object data="{{ asset('uploads/pdfs/' ~ ressource.fichierressource) }}" type="application/pdf" width="35%" height="10%"></object><br>
+					<a href="{{ asset('uploads/pdfs/' ~ ressource.fichierressource) }}" download>Télécharger le fichier PDF</a><br>
+				{% else %}
+					<img src="{{ asset('assets/uploads/' ~ ressource.fichierressource) }}" alt="Image" width="150">
+				{% endif %}
+
+			{% endif %}
+		</ol>
+	{% endfor %}
 {% endblock %}
